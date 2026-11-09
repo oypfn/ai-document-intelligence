@@ -11,7 +11,7 @@ def health() -> dict[str, str]:
     return {"status": "ok", "service": "document-intelligence"}
 
 @app.post("/api/v1/documents/extract", tags=["documents"])
-async def extract_document(file: UploadFile = File(...)) -> dict[str, object]:
+async def extract_document(file: UploadFile = File(...)  # noqa: B008) -> dict[str, object]:
     if file.content_type not in ALLOWED_TYPES:
         raise HTTPException(status_code=415, detail="Only PDF documents are supported.")
     content = await file.read(MAX_FILE_BYTES + 1)
