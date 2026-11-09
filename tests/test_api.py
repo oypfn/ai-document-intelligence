@@ -25,3 +25,11 @@ def test_rejects_invalid_pdf_signature() -> None:
         files={"file": ("broken.pdf", b"not a pdf", "application/pdf")},
     )
     assert response.status_code == 400
+
+
+def test_rejects_files_over_ten_megabytes() -> None:
+    response = client.post(
+        "/api/v1/documents/extract",
+        files={"file": ("large.pdf", b"%PDF-" + b"x" * (10 * 1024 * 1024), "application/pdf")},
+    )
+    assert response.status_code == 413
